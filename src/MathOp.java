@@ -6,6 +6,7 @@
 
 /**
  *
+ * test
  * @author da7oom
  */
 import com.opencsv.CSVReader;
@@ -100,7 +101,7 @@ public class MathOp {
                     data.setPhoneNumber2(fields[5]);
                     data.setTypeOfCall(fields[6]);
                     data.setSafe(fields[7]);
-                    data.setWeight(Integer.parseInt(fields[8]));
+                    data.setWeight(Double.parseDouble(fields[8]));
                     allData.add(data);
                     if (counter == 10) { // thats mean ok i took the frist criminal
                         for (int i = 0; i < 10; i++) {
@@ -145,7 +146,7 @@ public class MathOp {
                     extCounter++;
                     if (extCounter == 10){
                     break;
-                } // i am in changing into douple
+                } 
                 }
                 
 //                System.out.println("the extCounter = " + extCounter);
@@ -159,7 +160,7 @@ public class MathOp {
                 }
                 
                 else if((Type.equals("INCOMING") && (Safe.equals("TRUE"))) || Type.equals("INCOMING") && (Safe.equals("FALSE"))){
-                    weight = (int) ((weight*0.5)/10);
+                    weight = ((weight*0.1)/10.0);
 //                    System.out.println("the weight2 = " + weight);
                     d.setWeight(weight);
                 }
