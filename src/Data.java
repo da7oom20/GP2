@@ -10,62 +10,53 @@
  */
 public class Data {
 
-    private int id;
-    private String Name1;
-    private String PhoneNumber1;
-    private int id2;
-    private String Name2;
-    private String PhoneNumber2;
+    private String Name;
+    private String CallNumber;
+    private String Date;
+    private String Time;
+    private String Duration;
     private String TypeOfCall;
     private String Safe;
     private double Weight;
 
-    public int getId() {
-        return id;
+    public String getName() {
+        return Name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
-    public String getName1() {
-        return Name1;
+    public String getCallNumber() {
+        return CallNumber;
     }
 
-    public void setName1(String Name1) {
-        this.Name1 = Name1;
+    public void setCallNumber(String CallNumber) {
+        this.CallNumber = CallNumber;
     }
 
-    public String getPhoneNumber1() {
-        return PhoneNumber1;
+    public String getDate() {
+        return Date;
     }
 
-    public void setPhoneNumber1(String PhoneNumber1) {
-        this.PhoneNumber1 = PhoneNumber1;
+    public void setDate(String Date) {
+        this.Date = Date;
     }
 
-    public int getId2() {
-        return id2;
+    public String getTime() {
+        return Time;
     }
 
-    public void setId2(int id2) {
-        this.id2 = id2;
+    public void setTime(String Time) {
+        this.Time = Time;
     }
 
-    public String getName2() {
-        return Name2;
+    public String getDuration() {
+        return Duration;
     }
 
-    public void setName2(String Name2) {
-        this.Name2 = Name2;
-    }
-
-    public String getPhoneNumber2() {
-        return PhoneNumber2;
-    }
-
-    public void setPhoneNumber2(String PhoneNumber2) {
-        this.PhoneNumber2 = PhoneNumber2;
+    public void setDuration(String Duration) {
+        this.Duration = Duration;
     }
 
     public String getTypeOfCall() {
@@ -91,5 +82,8 @@ public class Data {
     public void setWeight(double Weight) {
         this.Weight = Weight;
     }
+                                
+
+    
 
 }

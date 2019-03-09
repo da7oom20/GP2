@@ -7,10 +7,11 @@
 /**
  *
  * test
+ *
  * @author da7oom
  */
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
+//import com.opencsv.CSVReader;
+//import com.opencsv.CSVWriter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,14 +27,21 @@ import java.util.logging.Logger;
 public class MathOp {
 
     public static void main(String[] args) {
-        String filePath = "C:\\Users\\da7oom\\Desktop\\MOCK_DATA2.csv";
+        File filePath = new File("C:\\Users\\da7oom\\Desktop\\dumb");
+//        File dir = new File("path/to/files/");        
+        
+        for (String file : filePath.list()) {
+            System.out.println("starting read user.csv file");
+            readCsv(file);
+        }
 
 //        System.out.println("starting write user.csv file: " + filePath);
 //        writeCsv(filePath);
-        System.out.println("starting read user.csv file");
-        readCsv(filePath);
+//        System.out.println("starting read user.csv file");
+//        readCsv(filePath);
     }
 
+    /*
     public static void writeCsv(String filePath) {
         List<Data> alldata = new ArrayList<Data>();
 
@@ -68,40 +76,38 @@ public class MathOp {
                 e.printStackTrace();
             }
         }
-    }
-
+    }*/
     public static void readCsv(String filePath) {
         BufferedReader reader = null;
         FileWriter fileWriter = null;
-
+        filePath = "C:\\Users\\da7oom\\Desktop\\dumb\\" + filePath;
         try {
             List<Data> allData = new ArrayList<Data>();
             String line = "";
             reader = new BufferedReader(new FileReader(filePath));
             reader.readLine();
-
+            System.out.println("here");
             List<String> temp = new ArrayList<String>();
             List<Double> tempInt = new ArrayList<Double>();
             List<List> theWeightList = new ArrayList<List>();
             int counter = 0;
             while ((line = reader.readLine()) != null) {
                 counter++;
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 10; i++) { //for weight
                     tempInt.add(0.0);
                 }
                 String[] fields = line.split(",");
                 if (fields.length > 0) {
                     Data data = new Data();
-                    data.setId(Integer.parseInt(fields[0]));
-                    data.setName1(fields[1]);
-                    data.setPhoneNumber1(fields[2]);
-                    data.setId2(Integer.parseInt(fields[3]));
-                    data.setName2(fields[4]);
-                    temp.add(fields[4]);
-                    data.setPhoneNumber2(fields[5]);
-                    data.setTypeOfCall(fields[6]);
-                    data.setSafe(fields[7]);
-                    data.setWeight(Double.parseDouble(fields[8]));
+                    data.setName(fields[0]);
+                    temp.add(fields[0]); // i do that because of i will decide the initial weight depends on how much repetations for this name , so i keep track them
+                    data.setTypeOfCall(fields[1]);
+                    data.setCallNumber(fields[2]);
+                    data.setDate(fields[3]);
+                    data.setTime(fields[4]);
+                    data.setDuration(fields[5]);
+//                    data.setSafe(fields[6]);
+                    data.setWeight(Double.parseDouble(fields[6]));
                     allData.add(data);
                     if (counter == 10) { // thats mean ok i took the frist criminal
                         for (int i = 0; i < 10; i++) {
@@ -116,7 +122,7 @@ public class MathOp {
                             }
                         }
                         List<Double> temp1 = new ArrayList<>(tempInt.subList(0, 10));
-                        theWeightList.add(temp1);
+                        theWeightList.add(temp1);                        
                         System.out.println("----");
                         System.out.println(temp);
                         counter = 0;
@@ -131,41 +137,33 @@ public class MathOp {
 
             for (Data d : allData) {
                 // getting the data
-                int id = d.getId();
-                String name1 = d.getName1();
-                String phone1 = d.getPhoneNumber1();
-                int id2 = d.getId2();
-                String name2 = d.getName2();
-                String phone2 = d.getPhoneNumber2();
-                String Type = d.getTypeOfCall();
-                String Safe = d.getSafe();
-                double weight = d.getWeight();
-                
+                String TypeOfCall = d.getTypeOfCall();
+//                String Safe = d.getSafe();
+//                String duration = d.getDuration();
+                double Weight = d.getWeight();
+
                 if (intCounter == 10) {
                     intCounter = 0;
                     extCounter++;
-                    if (extCounter == 10){
-                    break;
-                } 
+                    if (extCounter == 10) {
+                        break;
+                    }
                 }
-                
+
 //                System.out.println("the extCounter = " + extCounter);
 //                System.out.println("the intCounter = " + intCounter);
                 //operations 
-                weight = (Double) theWeightList.get(extCounter).get(intCounter);
-                if ((Type.equals("OUTGOING") && (Safe.equals("TRUE"))) || Type.equals("OUTGOING") && (Safe.equals("FALSE"))) { // we will 
-                    weight = weight/10.0;
+                Weight = (Double) theWeightList.get(extCounter).get(intCounter);
+                if ((TypeOfCall.equals("OUTGOING"))) { // we will 
+                    Weight = Weight + 0.02;
 //                    System.out.println("the weight1 = " + weight);
-                    d.setWeight(weight);
-                }
-                
-                else if((Type.equals("INCOMING") && (Safe.equals("TRUE"))) || Type.equals("INCOMING") && (Safe.equals("FALSE"))){
-                    weight = ((weight*0.1)/10.0);
+                    d.setWeight(Weight);
+                } else if ((TypeOfCall.equals("INCOMING"))) {
+                    Weight = Weight + 0.01;
 //                    System.out.println("the weight2 = " + weight);
-                    d.setWeight(weight);
+                    d.setWeight(Weight);
                 }
                 intCounter++;
-                
 
             }
 
@@ -173,46 +171,42 @@ public class MathOp {
             System.out.println(theWeightList);
 
             fileWriter = new FileWriter(filePath);
-            fileWriter.append("id,	Name1,	PhoneNumber1,	id2,	Name2,	PhoneNumber2,	TypeOfCall,	Safe,	Weight\n");
+            fileWriter.append("Name,TypeOfCall,CallNumber,Date,Time,Duration,Weight\n");
             fileWriter.write(filePath, 0, 0);
             for (Data u : allData) {
-                System.out.println("ID : " + u.getId());
-                System.out.println("Name1 : " + u.getName1());
-                System.out.println("PhoneNumber1 : " + u.getPhoneNumber1());
-                System.out.println("ID2 : " + u.getId2());
-                System.out.println("Name2 : " + u.getName2());
-                System.out.println("PhoneNumber2 : " + u.getPhoneNumber2());
+                System.out.println("Name : " + u.getName());
                 System.out.println("TypeOfCall : " + u.getTypeOfCall());
-                System.out.println("Safe : " + u.getSafe());
+                System.out.println("CallNumber : " + u.getCallNumber());
+                System.out.println("Date : " + u.getDate());
+                System.out.println("Time : " + u.getTime());
+                System.out.println("Duration : " + u.getDuration());
+//                System.out.println("Safe : " + u.getSafe());
                 System.out.println("Weight : " + u.getWeight());
 
-                int id = u.getId();
-                String name1 = u.getName1();
-                String phone1 = u.getPhoneNumber1();
-                int id2 = u.getId2();
-                String name2 = u.getName2();
-                String phone2 = u.getPhoneNumber2();
-                String Type = u.getTypeOfCall();
-                String Safe = u.getSafe();
-                double weight = u.getWeight();
+                String Name = u.getName();
+                String CallNumber = u.getCallNumber();
+                String Date = u.getDate();
+                String Time = u.getTime();
+                String Duration = u.getDuration();
+                String TypeOfCall = u.getTypeOfCall();
+//                String Safe = u.getSafe();
+                double Weight = u.getWeight();
 
-                fileWriter.append(String.valueOf(id));
+                fileWriter.append(Name);
                 fileWriter.append(",");
-                fileWriter.append(name1);
+                fileWriter.append(TypeOfCall);
                 fileWriter.append(",");
-                fileWriter.append(phone1);
+                fileWriter.append(CallNumber);
                 fileWriter.append(",");
-                fileWriter.append(String.valueOf(id2));
+                fileWriter.append(Date);
                 fileWriter.append(",");
-                fileWriter.append(name2);
+                fileWriter.append(Time);
                 fileWriter.append(",");
-                fileWriter.append(phone2);
+                fileWriter.append(Duration);
                 fileWriter.append(",");
-                fileWriter.append(Type);
-                fileWriter.append(",");
-                fileWriter.append(Safe);
-                fileWriter.append(",");
-                fileWriter.append(String.valueOf(weight));
+//                fileWriter.append(Safe);
+//                fileWriter.append(",");
+                fileWriter.append(String.valueOf(Weight));
                 fileWriter.append("\n");
             }
 
